@@ -6,7 +6,6 @@ using UnityEngine.AI;
 public class Movable : Selectable
 {
     public float height;
-    public Transform goal;
 
     // Update is called once per frame
     public override void Update()
