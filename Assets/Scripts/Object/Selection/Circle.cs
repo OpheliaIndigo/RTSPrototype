@@ -13,12 +13,14 @@ public class Circle : MonoBehaviour
     void Start()
     {
         line = gameObject.GetComponent<LineRenderer>();
+        line.gameObject.layer = LayerMask.NameToLayer("UI");
 
         line.positionCount = segments + 1;
         line.useWorldSpace = false;
         line.startWidth = 0.2f;
         line.endWidth = 0.2f;
         CreatePoints();
+        gameObject.SetActive(false);
     }
 
 

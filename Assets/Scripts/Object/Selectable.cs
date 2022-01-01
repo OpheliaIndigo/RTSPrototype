@@ -12,6 +12,8 @@ public class Selectable : MonoBehaviour
     public Material baseMaterial;
     public float selectionBaseHeight;
 
+    GameObject selectionCircle;
+
     protected Ray ray;
     protected RaycastHit hit;
 
@@ -19,7 +21,11 @@ public class Selectable : MonoBehaviour
     // Start is called before the first frame update
     public virtual void Start()
     {
-        SelectionBase.CreateSelectionBaseObject(this.gameObject, selectionBaseHeight, baseMaterial);
+        selectionCircle = new GameObject();
+        selectionCircle.name = name;
+        selectionCircle.transform.parent = transform;
+        selectionCircle.transform.position = transform.position;
+        SelectionBase.CreateSelectionBaseObject(selectionCircle, selectionBaseHeight, baseMaterial);
     }
 
     // Update is called once per frame
@@ -31,15 +37,10 @@ public class Selectable : MonoBehaviour
         }
     }
 
-    protected void RecalculateObjectLocationData()
-    {
-        //SelectionBase.UpdateSelectionBaseObject(selectionBaseInstance, this.gameObject);
-    }
-
     protected void UpdateSelectionSprite()
     {
         //selectionBaseInstance.SetActive(selected);
-        GetComponent<LineRenderer>().enabled = selected;
+        selectionCircle.SetActive(selected);
     }
 
     protected bool MouseButtonHitEvent(int mouseButton)
@@ -56,10 +57,9 @@ public class Selectable : MonoBehaviour
         return false;
     }
 
-    protected void SelectionEvent()
+    public void SelectionEvent()
     {
         selected = !selected;
         UpdateSelectionSprite();
-        print(hit.collider.name + " " + selected.ToString());
     }
 }

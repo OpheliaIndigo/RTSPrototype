@@ -44,7 +44,6 @@ public class SelectionBase
     private static Vector3 calculateBasePosition(GameObject parent)
     {
 
-        GameObject terrain = TerrainHandler.GetTerrainObject();
         RaycastHit hit;
         if (Physics.Raycast(parent.transform.position, Vector3.down, out hit))
         {

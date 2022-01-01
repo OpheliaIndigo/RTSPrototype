@@ -8,33 +8,56 @@ public class CameraController : MonoBehaviour
     public float borderDistanceThreshold;
     public float cameraHeight;
 
+    public Vector3 targetPoint;
+    public float rayMagnitude;
+
+    float xOffset;
+    float yOffset;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        targetPoint = Vector3.zero;
+
+        calculateOffsets();
+        Pan(Vector3.zero);
+        // Initialise camera at 
     }
 
     // Update is called once per frame
     void Update()
     {
-        Pan(getCameraTranslation());
+        calculateCameraTerrainMagnitude();
+        Vector3 translation = getCameraTranslation();
+        if (translation != Vector3.zero)
+        {
+            Pan(translation);
+        }
     }
 
-    
-    private float calculateCameraTerrainMagnitude()
+    void calculateOffsets()
+    {
+        Camera camera = Camera.main;
+
+        float radianXRotation = camera.transform.rotation.eulerAngles.x * Mathf.PI / 180;
+
+        xOffset = cameraHeight * Mathf.Sin(radianXRotation * Mathf.PI / Mathf.PI);
+        yOffset = cameraHeight * Mathf.Cos(radianXRotation * Mathf.PI / Mathf.PI);
+        print("xOffset: " + xOffset.ToString() + "\nyOffset: " + yOffset.ToString());
+
+    }
+
+    private bool calculateCameraTerrainMagnitude()
     {
         // Correct such that camera is always a certain height from terrain directly below it. Also means can't pan out of view.
         RaycastHit hit;
-        if (Physics.Raycast(Camera.main.ViewportPointToRay(new Vector3(0.5f,0.5f,0.5f)), out hit))
+        if (Physics.Raycast(Camera.main.ScreenPointToRay(new Vector3(Screen.width/2,Screen.height/2)), out hit))
         {
-            Vector3 point = hit.point;
-            print("found distance " + hit.distance);
-            return hit.distance;
+            targetPoint.y = hit.point.y;
+            rayMagnitude = hit.distance;
+            return true;
         }
-        else
-        {
-            return -1;
-        }
+        return false;
     }
 
     private Vector3 getCameraTranslation()
@@ -48,10 +71,10 @@ public class CameraController : MonoBehaviour
             return Vector3.right * mouseSensitivity;
         } else if (mousePos.y < borderDistanceThreshold)
         {
-            return Vector3.down * mouseSensitivity;
+            return Vector3.back * mouseSensitivity;
         } else if (mousePos.y > Screen.height - borderDistanceThreshold)
         {
-            return Vector3.up * mouseSensitivity;
+            return Vector3.forward * mouseSensitivity;
         } else
         {
             return Vector3.zero;
@@ -65,17 +88,18 @@ public class CameraController : MonoBehaviour
 
     private void Pan(Vector3 direction)
     {
-        Camera camera = Camera.main;
-        camera.transform.Translate(direction);
-        float magnitude = calculateCameraTerrainMagnitude();
-        if (Mathf.Abs(magnitude - cameraHeight) > 1)
-        {
-            // Modify z such that magnitude == camera height
-            float newY = Mathf.Sqrt(magnitude - Mathf.Pow(Camera.main.transform.position.x,2) - Mathf.Pow(Camera.main.transform.position.z, 2));
-            print("new value " + newY.ToString() + " in Y axis");
-            print("panning " + (newY - Camera.main.transform.position.y).ToString());
-            // Zoom 
-            Pan(new Vector3(0, Camera.main.transform.position.y - newY, 0));
-        }
+
+
+        // Translate point in direction
+        targetPoint += direction;
+        Vector3 newCamera = targetPoint;
+        newCamera.x = newCamera.x - xOffset;
+        newCamera.y = newCamera.y + yOffset;
+
+
+        Camera main = Camera.main;
+        print("Moving camera from " + main.transform.position.ToString() + " to " + newCamera.ToString());
+        main.transform.position = newCamera;
+
     }
 }

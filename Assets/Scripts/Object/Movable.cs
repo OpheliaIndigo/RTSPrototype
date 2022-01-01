@@ -31,7 +31,6 @@ public class Movable : Selectable
 
         newPosition.y += height;
         // transform.position = newPosition;
-        this.RecalculateObjectLocationData();
         agent.destination = newPosition;
     }
 
