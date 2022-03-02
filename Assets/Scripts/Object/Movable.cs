@@ -10,10 +10,6 @@ public class Movable : Selectable
     // Update is called once per frame
     public override void Update()
     {
-        if (MouseButtonHitEvent(0))
-        {
-            SelectionEvent();
-        }
         if (selected && Input.GetMouseButtonDown(1))
         {
             ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -25,7 +21,7 @@ public class Movable : Selectable
         }
     }
 
-    protected void moveToPosition(Vector3 newPosition)
+    public override void moveToPosition(Vector3 newPosition)
     {
         NavMeshAgent agent = GetComponent<NavMeshAgent>();
 

@@ -5,7 +5,7 @@ using UnityEngine.Rendering;
 
 public class SelectionBase
 {
-    public static void CreateSelectionBaseObject(GameObject parent, float selectionBaseHeight, Material baseMaterial)
+    public static void CreateSelectionBaseObject(GameObject parent, float selectionBaseHeight, Material baseMaterial, float baseRadius, float baseThickness)
     {
         /*GameObject selectionBaseInstance = GameObject.Instantiate(basePrefab);
         selectionBaseInstance.transform.SetParent(parent.transform);
@@ -13,12 +13,12 @@ public class SelectionBase
         Vector3 basePosition = calculateBasePosition(parent);
         selectionBaseInstance.transform.position = basePosition;*/
         baseMaterial.renderQueue = (int)RenderQueue.Background;
-        CreateCircle(parent, selectionBaseHeight, baseMaterial);
+        CreateCircle(parent, selectionBaseHeight, baseMaterial, baseRadius, baseThickness);
 
         //return selectionBaseInstance;
     }
 
-    public static void CreateCircle(GameObject parent, float selectionBaseHeight, Material baseMaterial)
+    public static void CreateCircle(GameObject parent, float selectionBaseHeight, Material baseMaterial, float baseRadius, float baseThickness)
     {
         if (parent.GetComponent<LineRenderer>() == null)
         {
@@ -27,9 +27,9 @@ public class SelectionBase
         parent.AddComponent<Circle>();
         Circle circle = parent.GetComponent<Circle>();
         circle.segments = 360;
-        circle.xradius = circle.zradius = 1;
+        circle.xradius = circle.zradius = baseRadius;
         circle.yposition = selectionBaseHeight;
-
+        circle.baseThickness = baseThickness;
         LineRenderer lr = parent.GetComponent<LineRenderer>();
 
         lr.material = baseMaterial;

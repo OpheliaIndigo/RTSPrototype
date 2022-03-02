@@ -14,6 +14,7 @@ public class CameraController : MonoBehaviour
     float xOffset;
     float yOffset;
 
+
     // Start is called before the first frame update
     void Start()
     {
@@ -51,7 +52,7 @@ public class CameraController : MonoBehaviour
     {
         // Correct such that camera is always a certain height from terrain directly below it. Also means can't pan out of view.
         RaycastHit hit;
-        if (Physics.Raycast(Camera.main.ScreenPointToRay(new Vector3(Screen.width/2,Screen.height/2)), out hit))
+        if (Physics.Raycast(Camera.main.ScreenPointToRay(new Vector3(Screen.width/2,Screen.height/2)), out hit, Mathf.Infinity, 1<<4))
         {
             targetPoint.y = hit.point.y;
             rayMagnitude = hit.distance;
@@ -98,7 +99,6 @@ public class CameraController : MonoBehaviour
 
 
         Camera main = Camera.main;
-        print("Moving camera from " + main.transform.position.ToString() + " to " + newCamera.ToString());
         main.transform.position = newCamera;
 
     }

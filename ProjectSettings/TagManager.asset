@@ -6,6 +6,8 @@ TagManager:
   tags:
   - MainTerrain
   - SelectionBasePrefab
+  - UnitController
+  - Unit
   layers:
   - Default
   - TransparentFX

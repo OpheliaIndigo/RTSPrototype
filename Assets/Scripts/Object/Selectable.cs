@@ -8,6 +8,7 @@ public class Selectable : MonoBehaviour
 {
     public bool selected;
     public float baseRadius;
+    public float baseThickness = 0.2f;
 
     public Material baseMaterial;
     public float selectionBaseHeight;
@@ -23,18 +24,16 @@ public class Selectable : MonoBehaviour
     {
         selectionCircle = new GameObject();
         selectionCircle.name = name;
+        selectionCircle.transform.localScale = Vector3.one;
         selectionCircle.transform.parent = transform;
         selectionCircle.transform.position = transform.position;
-        SelectionBase.CreateSelectionBaseObject(selectionCircle, selectionBaseHeight, baseMaterial);
+        SelectionBase.CreateSelectionBaseObject(selectionCircle, selectionBaseHeight, baseMaterial, baseRadius, baseThickness);
     }
 
     // Update is called once per frame
     public virtual void Update()
     {
-        if (MouseButtonHitEvent(0))
-        {
-            SelectionEvent();
-        }
+
     }
 
     protected void UpdateSelectionSprite()
@@ -43,23 +42,24 @@ public class Selectable : MonoBehaviour
         selectionCircle.SetActive(selected);
     }
 
-    protected bool MouseButtonHitEvent(int mouseButton)
+    public void Select()
     {
-        ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        if (Physics.Raycast(ray, out hit))
-        {
-            if (Input.GetMouseButtonDown(mouseButton))
-                if (hit.transform.position == this.transform.position)
-                {
-                    return true;
-                }
-        }
-        return false;
+        selected = true;
+        UpdateSelectionSprite();
     }
+
+    public void Deselect()
+    {
+        selected = false;
+        UpdateSelectionSprite();
+    }
+
 
     public void SelectionEvent()
     {
         selected = !selected;
         UpdateSelectionSprite();
     }
+
+    public virtual void moveToPosition(Vector3 position) { }
 }

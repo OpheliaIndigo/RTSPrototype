@@ -8,6 +8,7 @@ public class Circle : MonoBehaviour
     public float xradius;
     public float zradius;
     public float yposition;
+    public float baseThickness = 0.2f;
     LineRenderer line;
 
     void Start()
@@ -17,8 +18,8 @@ public class Circle : MonoBehaviour
 
         line.positionCount = segments + 1;
         line.useWorldSpace = false;
-        line.startWidth = 0.2f;
-        line.endWidth = 0.2f;
+        line.startWidth = baseThickness;
+        line.endWidth = baseThickness;
         CreatePoints();
         gameObject.SetActive(false);
     }
