@@ -14,6 +14,9 @@ public class RTSEventHandler : MonoBehaviour
     public Vector3 dragMouseEnd;
 
     bool dragging;
+    public int selectionIncrement = 0;
+    public int currentSelection = 0;
+    int selectionStarted = 0; // 0 nothing happened, 1 nonshit new selection, 2 shift remove from selection, 3 shift add to selection
 
     public List<Selectable> selected = new List<Selectable>();
 
@@ -27,6 +30,11 @@ public class RTSEventHandler : MonoBehaviour
     void Update()
     {
         // LeftMouseButtonHitEvent();
+        if (!dragging)
+        {
+            selectionStarted = 0;
+        }
+
         RightMouseButtonHitEvent();
         LeftButtonDragEvent();
         GetBoxSelected();
@@ -131,18 +139,24 @@ public class RTSEventHandler : MonoBehaviour
 
     void SelectThing(Selectable sel)
     {
-        if (!selected.Contains(sel))
+        if (selectionStarted == 0) // 0 nothing happened, 1 nonshit new selection, 2 shift remove from selection, 3 shift add to selection
         {
-            selected.Add(sel);
-            sel.Select();
+            if (!Input.GetKey(KeyCode.LeftShift)) { selectionStarted = 1; DeselectAll(); } // Realistically want to deselect all and start new selection.
+            else if (selected.Contains(sel)) { selectionStarted = 2; }
+            else { selectionStarted = 3; }
         }
-        if (Input.GetKey(KeyCode.LeftShift) && selected.Contains(sel))
+        switch (selectionStarted)
         {
-            // Get index of sel in list, then remove it and increment
-            sel.Deselect();
-            selected.Remove(sel);
+            case 1:
+            case 3:
+                sel.Select();
+                selected.Add(sel);
+                break;
+            case 2:
+                sel.Deselect();
+                selected.Remove(sel);
+                break;
         }
-
     }
 
     Vector3 SelectionCenterPosition()
@@ -159,6 +173,14 @@ public class RTSEventHandler : MonoBehaviour
         return Vector3.negativeInfinity;
     }
 
+    void DeselectAll()
+    {
+        foreach (var sel in selected)
+        {
+            sel.Deselect();
+        }
+        selected.Clear();
+    }
 
     private void OnGUI()
     {
