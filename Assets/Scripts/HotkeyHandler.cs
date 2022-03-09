@@ -15,4 +15,7 @@ public static class HotkeyHandler
         KeyCode.A, KeyCode.S, KeyCode.D, KeyCode.F,
         KeyCode.Z, KeyCode.X, KeyCode.C, KeyCode.V
     };
+
+    public static Color minHealth = Color.red;
+    public static Color maxHealth = Color.green;
 }

@@ -21,6 +21,7 @@ public static class Utils
         }
     }
 
+
     public static void DrawScreenRect(Rect rect, Color color)
     {
         GUI.color = color;
@@ -49,6 +50,7 @@ public static class Utils
         var topLeft = Vector3.Min(screenPosition1, screenPosition2);
         var bottomRight = Vector3.Max(screenPosition1, screenPosition2);
         // Create Rect
+        
         return Rect.MinMaxRect(topLeft.x, topLeft.y, bottomRight.x, bottomRight.y);
     }
 }
