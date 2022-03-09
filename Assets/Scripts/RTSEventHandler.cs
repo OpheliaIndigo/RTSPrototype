@@ -29,7 +29,6 @@ public class RTSEventHandler : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // LeftMouseButtonHitEvent();
         if (!dragging)
         {
             selectionStarted = 0;
@@ -40,26 +39,9 @@ public class RTSEventHandler : MonoBehaviour
         GetBoxSelected();
     }
 
-    void LeftMouseButtonHitEvent()
-    {
-        if (Input.GetMouseButtonDown(0))
-        {
-            ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(ray, out hit))
-            {
-                Selectable sel = hit.collider.gameObject.GetComponent<Selectable>();
-                if (sel != null)
-                {
-                    SelectThing(sel);
-                }
-            }
-
-        }
-    }
-
     void RightMouseButtonHitEvent()
     {
-        if (Input.GetMouseButton(1))
+        if (Input.GetMouseButton(HotkeyHandler.mouseButtonMove))
         {
             if (Physics.Raycast(ray, out hit))
             {
@@ -75,7 +57,7 @@ public class RTSEventHandler : MonoBehaviour
 
     void LeftButtonDragEvent()
     {
-        if (!Input.GetMouseButton(0))
+        if (!Input.GetMouseButton(HotkeyHandler.mouseButtonSelect))
         {
             dragging = false;
             dragStart = Vector3.negativeInfinity;
@@ -88,7 +70,7 @@ public class RTSEventHandler : MonoBehaviour
         else if (!dragging)
         {
             // Detect mouse down
-            if (Input.GetMouseButtonDown(0))
+            if (Input.GetMouseButtonDown(HotkeyHandler.mouseButtonSelect))
             {
                 dragging = true;
                 selectionIncrement++;
@@ -126,12 +108,20 @@ public class RTSEventHandler : MonoBehaviour
             }
             RaycastHit[] hits = Physics.BoxCastAll(SelectionCenterPosition(), dragDims, Quaternion.Inverse(Camera.main.transform.rotation).eulerAngles);
             print("shooting from " + SelectionCenterPosition().ToString() + " width " + dragDims.ToString());
+            int selectedThings = 0;
             for (int i = 0; i < hits.Length; i++)
             {
+                // Check if i == 0, clear all selections before selecting a thing.
+                
                 Selectable sel = hits[i].collider.gameObject.GetComponent<Selectable>();
                 if (sel != null)
                 {
+                    if (selectedThings == 0 && !Input.GetKey(HotkeyHandler.addRemoveSelectionKey))
+                    {
+                        DeselectAll();
+                    }
                     SelectThing(sel);
+                    selectedThings++;
                 }
             }
         }
@@ -141,7 +131,7 @@ public class RTSEventHandler : MonoBehaviour
     {
         if (selectionStarted == 0) // 0 nothing happened, 1 nonshit new selection, 2 shift remove from selection, 3 shift add to selection
         {
-            if (!Input.GetKey(KeyCode.LeftShift)) { selectionStarted = 1; DeselectAll(); } // Realistically want to deselect all and start new selection.
+            if (!Input.GetKey(HotkeyHandler.addRemoveSelectionKey)) { selectionStarted = 1; DeselectAll(); } // Realistically want to deselect all and start new selection.
             else if (selected.Contains(sel)) { selectionStarted = 2; }
             else { selectionStarted = 3; }
         }
