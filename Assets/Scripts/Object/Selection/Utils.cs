@@ -14,13 +14,13 @@ public static class Utils
             {
                 _whiteTexture = new Texture2D(1, 1);
                 _whiteTexture.SetPixel(0, 0, Color.white);
+                
                 _whiteTexture.Apply();
             }
 
             return _whiteTexture;
         }
     }
-
 
     public static void DrawScreenRect(Rect rect, Color color)
     {
@@ -53,4 +53,15 @@ public static class Utils
         
         return Rect.MinMaxRect(topLeft.x, topLeft.y, bottomRight.x, bottomRight.y);
     }
+
+    public static Rect BoundsToScreenRect(Bounds bounds)
+    {
+        // Get mesh origin and farthest extent (this works best with simple convex meshes)
+        Vector3 origin = Camera.main.WorldToScreenPoint(new Vector3(bounds.min.x, bounds.max.y, 0f));
+        Vector3 extent = Camera.main.WorldToScreenPoint(new Vector3(bounds.max.x, bounds.min.y, 0f));
+
+        // Create rect in screen space and return - does not account for camera perspective
+        return new Rect(origin.x, Screen.height - origin.y, extent.x - origin.x, origin.y - extent.y);
+    }
+
 }

@@ -231,12 +231,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 42996256}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 48.8, y: 3.61, z: 132.68}
   m_LocalScale: {x: 5, y: 5, z: 5}
   m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_Father: {fileID: 647429521}
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!195 &42996262
 NavMeshAgent:
@@ -336,6 +336,7 @@ Transform:
   - {fileID: 742003930}
   - {fileID: 1600621702}
   - {fileID: 1623967845}
+  - {fileID: 42996261}
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -633,8 +634,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 42
   currentHealth: 0
-  barWidth: 100
+  barWidth: 50
   barHeight: 10
+  deselectedBarTransparency: 0.4
+  selectedBarTransparency: 0.2
   testHPIncrement: 5
 --- !u!1 &1041924443
 GameObject:
@@ -869,9 +872,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec42eea97305e514cbd440b7d5ea6b50, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mouseSensitivity: 0.4
+  mouseSensitivity: 0.6
   borderDistanceThreshold: 30
-  cameraHeight: 120
+  cameraHeight: 140
   targetPoint: {x: -61.82716, y: 0, z: -32.83693}
   rayMagnitude: 0
 --- !u!1 &1600621698
