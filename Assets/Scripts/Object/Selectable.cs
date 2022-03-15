@@ -18,6 +18,8 @@ public class Selectable : MonoBehaviour
     protected Ray ray;
     protected RaycastHit hit;
 
+    public Vector3 rally;
+
 
     // Start is called before the first frame update
     public virtual void Start()
@@ -31,9 +33,17 @@ public class Selectable : MonoBehaviour
     }
 
     // Update is called once per frame
-    public virtual void Update()
+    public void Update()
     {
-
+        if (selected && Input.GetMouseButtonDown(1))
+        {
+            ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(ray, out hit))
+            {
+                Vector3 newPosition = hit.point;
+                moveToPosition(newPosition);
+            }
+        }
     }
 
     protected void UpdateSelectionSprite()
@@ -61,5 +71,7 @@ public class Selectable : MonoBehaviour
         UpdateSelectionSprite();
     }
 
-    public virtual void moveToPosition(Vector3 position) { }
+    public virtual void moveToPosition(Vector3 position) {
+        rally = position;
+    }
 }
