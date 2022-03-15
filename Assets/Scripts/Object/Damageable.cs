@@ -12,7 +12,7 @@ public class Damageable : MonoBehaviour
     float barYOffset;
 
     public float deselectedBarTransparency = 0.4f;
-    public float selectedBarTransparency = 0.2f;
+    public float selectedBarTransparency = 0.1f;
 
     Color actualColor;
     Color trueColor;

@@ -635,9 +635,9 @@ MonoBehaviour:
   maxHealth: 42
   currentHealth: 0
   barWidth: 50
-  barHeight: 10
+  barHeight: 7
   deselectedBarTransparency: 0.4
-  selectedBarTransparency: 0.2
+  selectedBarTransparency: 0.1
   testHPIncrement: 5
 --- !u!1 &1041924443
 GameObject:
@@ -890,6 +890,7 @@ GameObject:
   - component: {fileID: 1600621700}
   - component: {fileID: 1600621699}
   - component: {fileID: 1600621703}
+  - component: {fileID: 1600621704}
   m_Layer: 0
   m_Name: Base
   m_TagString: Untagged
@@ -990,6 +991,25 @@ MonoBehaviour:
   baseThickness: 0.5
   baseMaterial: {fileID: 2100000, guid: 21fd0244cdfc8be45b76553c5142e5b5, type: 2}
   selectionBaseHeight: -5
+--- !u!114 &1600621704
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1600621698}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c2929ab72df467645a0f9a5e1f53d4c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 42
+  currentHealth: 0
+  barWidth: 250
+  barHeight: 10
+  deselectedBarTransparency: 0.4
+  selectedBarTransparency: 0.1
+  testHPIncrement: 5
 --- !u!1 &1623967844
 GameObject:
   m_ObjectHideFlags: 0
