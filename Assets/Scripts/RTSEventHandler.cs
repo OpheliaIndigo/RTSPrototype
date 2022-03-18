@@ -20,6 +20,7 @@ public class RTSEventHandler : MonoBehaviour
 
     public List<Selectable> selected = new List<Selectable>();
 
+    GameObject boxSelLiteral;
     // Start is called before the first frame update
     void Start()
     {
@@ -107,6 +108,7 @@ public class RTSEventHandler : MonoBehaviour
                 dragDims.y = 0.5f;
             }
             RaycastHit[] hits = Physics.BoxCastAll(SelectionCenterPosition(), dragDims, Quaternion.Inverse(Camera.main.transform.rotation).eulerAngles);
+
             print("shooting from " + SelectionCenterPosition().ToString() + " width " + dragDims.ToString());
             int selectedThings = 0;
             for (int i = 0; i < hits.Length; i++)
@@ -205,15 +207,19 @@ public class RTSEventHandler : MonoBehaviour
                 );
         Vector3 scale = new Vector3(
                     (dragEnd.x - dragStart.x) / 2,
-                    150,
+                    50,
                     (dragEnd.z - dragStart.z) / 2
                 );
-
+        position = transform.worldToLocalMatrix.MultiplyPoint(position);
 
         //Check that it is being run in Play Mode, so it doesn't try to draw this in Editor mode
         //Draw a cube where the OverlapBox is (positioned where your GameObject is as well as a size)
         if (dragging)
         {
+            Gizmos.matrix = transform.localToWorldMatrix;
+
+            //Gizmos.DrawWireCube(position, scale);
+
             Gizmos.DrawWireCube(position, scale);
         }
 
