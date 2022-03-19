@@ -6,7 +6,7 @@ public class Castable : MonoBehaviour
 {
     public List<Spell> spells;
 
-    Selectable sel;
+    public Selectable sel;
 
     // Start is called before the first frame update
     void Start()

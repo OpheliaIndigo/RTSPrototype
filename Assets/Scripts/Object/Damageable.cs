@@ -7,8 +7,6 @@ public class Damageable : MonoBehaviour
     public float maxHealth = 42f;
     public float currentHealth;
     
-    public int barWidth = 50;
-    public int barHeight = 10;
     float barYOffset;
 
     public float deselectedBarTransparency = 0.4f;
@@ -18,9 +16,14 @@ public class Damageable : MonoBehaviour
     Color trueColor;
 
     public float testHPIncrement = 5;
+
+    Selectable sel;
     // Start is called before the first frame update
     void Start()
     {
+        sel = GetComponent<Selectable>();
+        sel.addBar();
+
         currentHealth = maxHealth;
 
         Rect objectScreenRect = Utils.BoundsToScreenRect(GetComponent<MeshFilter>().sharedMesh.bounds);
@@ -40,6 +43,8 @@ public class Damageable : MonoBehaviour
             currentHealth = maxHealth;
         }
         TestHealthLoseGain();
+        sel.bars[0].setPctRect(currentHealth / maxHealth);
+        sel.bars[0].setBarColor(getHealthColor());
     }
 
     void TestHealthLoseGain()
@@ -55,7 +60,7 @@ public class Damageable : MonoBehaviour
     {
         actualColor = Color.Lerp(HotkeyHandler.minHealth, HotkeyHandler.maxHealth, currentHealth/maxHealth);
         trueColor = actualColor;
-        Selectable sel = GetComponent<Selectable>();
+        sel = GetComponent<Selectable>();
 
         if (sel != null)
         {
@@ -72,21 +77,5 @@ public class Damageable : MonoBehaviour
 
     }
 
-    private Rect getHealthRect(float heathPct)
-    {
-        Vector3 screenPos = Camera.main.WorldToScreenPoint(transform.position);
-        Vector3 screenBotLeft = new Vector3(screenPos.x - barWidth / 2, screenPos.y + barYOffset - barHeight / 2, screenPos.z);
-        Vector3 screenTopRight = new Vector3(screenPos.x - (barWidth / 2) + barWidth * heathPct, screenPos.y + barYOffset + barHeight / 2, screenPos.z);
-
-        Rect rect = Utils.GetScreenRect(screenBotLeft, screenTopRight);
-
-        return rect;
-    }
-
-    private void OnGUI()
-    {
-        Utils.DrawScreenRect(getHealthRect(currentHealth/maxHealth), getHealthColor());
-
-    }
 
 }

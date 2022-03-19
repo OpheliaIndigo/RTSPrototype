@@ -16,6 +16,8 @@ public class SpellTrain : Spell
     private float currentTime;
     private Castable sender;
 
+    private int barIndex;
+
     public override void Cast(Castable sender)
     {
         if (!isTraining)
@@ -25,6 +27,10 @@ public class SpellTrain : Spell
             currentTime = Time.time;
             isTraining = true;
             this.sender = sender;
+            barIndex = sender.sel.addBar();
+            sender.sel.bars[barIndex].setBarColor(HotkeyHandler.baseBar);
+
+
         }
     }
 
@@ -48,9 +54,11 @@ public class SpellTrain : Spell
     {
         elapsedSeconds++;
         progress = elapsedSeconds / (float)trainSeconds;
+        sender.sel.bars[barIndex].setPctRect(progress);
         if (progress >= 1)
         {
             Train();
+            sender.sel.removeBar(barIndex);
             isTraining = false;
         }
     }

@@ -18,7 +18,12 @@ public class Selectable : MonoBehaviour
     protected Ray ray;
     protected RaycastHit hit;
 
+    public List<ObjectBar> bars;
+
     public Vector3 rally;
+
+    public int barWidth = 50;
+    public int barHeight = 10;
 
 
     // Start is called before the first frame update
@@ -73,5 +78,21 @@ public class Selectable : MonoBehaviour
 
     public virtual void moveToPosition(Vector3 position) {
         rally = position;
+    }
+
+    public int addBar()
+    {
+        ObjectBar bar = gameObject.AddComponent<ObjectBar>();
+        bar.barWidth = barWidth;
+        bar.barHeight = barHeight;
+        bar.barIndex = bars.Count;
+        bars.Add(bar);
+        return bars.Count - 1;
+    }
+
+    public void removeBar(int index)
+    {
+        Destroy(bars[index]);
+        bars.RemoveAt(index);
     }
 }

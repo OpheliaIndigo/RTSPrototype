@@ -18,4 +18,5 @@ public static class HotkeyHandler
 
     public static Color minHealth = Color.red;
     public static Color maxHealth = Color.green;
+    public static Color baseBar = Color.blue;
 }
