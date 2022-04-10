@@ -12,8 +12,8 @@ public class SpellTrain : Spell
 
     private bool isTraining = false;
 
-    private int elapsedSeconds;
-    private float currentTime;
+    private float elapsedTime;
+    private float castTime;
     private Castable sender;
 
     private int barIndex;
@@ -23,8 +23,8 @@ public class SpellTrain : Spell
         if (!isTraining)
         {
             progress = 0f;
-            elapsedSeconds = 0;
-            currentTime = Time.time;
+            elapsedTime = 0f;
+            castTime = Time.time;
             isTraining = true;
             this.sender = sender;
             barIndex = sender.sel.addBar();
@@ -36,24 +36,25 @@ public class SpellTrain : Spell
 
     public void Start()
     {
-        elapsedSeconds = 0;
+        elapsedTime = 0f;
         progress = 0f;
     }
 
     public void Update()
     {
         //currentTime = Time.time;
-        if (Time.time - currentTime >= 1 && isTraining)
+        if (isTraining)
         {
-            UpdateSecond();
-            currentTime = Time.time;
+            UpdateBar();
         }
+        
     }
 
-    public void UpdateSecond()
+    public void UpdateBar()
     {
-        elapsedSeconds++;
-        progress = elapsedSeconds / (float)trainSeconds;
+        // Check 
+        elapsedTime = Time.time - castTime;
+        progress = elapsedTime / trainSeconds;
         sender.sel.bars[barIndex].setPctRect(progress);
         if (progress >= 1)
         {
